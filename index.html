@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naming Conventions and PEP 8</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#0b1630;--b2:#12224a;--pn:#08101f;--tx:#f2f6ff;--mu:#a3b3d6;--bl:#4b8bbe;--ye:#ffd43b;--ok:#3ddc84;--bd:#ff6b7a;--ln:#2a3b66;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;height:100%;display:flex;flex-direction:column;background:radial-gradient(900px 500px at 85% -10%,#1d3f7a77,transparent),radial-gradient(700px 400px at -10% 110%,#ffd43b14,transparent),var(--bg);color:var(--tx);font:clamp(16px,1.45vw,21px)/1.5 "Space Grotesk",system-ui,sans-serif}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--ye);outline-offset:2px}
+header,footer{display:flex;align-items:center;gap:.8rem;padding:.6rem clamp(12px,3vw,32px)}
+header{justify-content:space-between}header b{color:var(--ye)}#cnt{font:600 1rem "JetBrains Mono",monospace}
+.nb{background:var(--b2);border:1px solid var(--ln);border-radius:10px;padding:.4rem .9rem}.nb:disabled{opacity:.35;cursor:default}
+.pr{flex:1;height:6px;border-radius:9px;background:var(--b2);overflow:hidden}.pr i{display:block;height:100%;width:8%;background:linear-gradient(90deg,var(--bl),var(--ye));transition:width .35s}
+#deck{flex:1;position:relative;min-height:0}
+.s{position:absolute;inset:0;display:flex;overflow:auto;padding:clamp(12px,2.5vw,32px) clamp(14px,5vw,72px);opacity:0;visibility:hidden;transform:translateX(28px);transition:opacity .35s,transform .35s,visibility .35s}
+.s.on{opacity:1;visibility:visible;transform:none}.s.bf{transform:translateX(-28px)}
+.w{margin:auto;width:100%;max-width:1080px;display:flex;flex-direction:column;gap:.9rem}
+.hd{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+.hd span:first-child{color:var(--bl);font-weight:700}.by{background:var(--ye);color:#10203f;border-radius:99px;padding:.1rem .7rem;font-weight:700;text-transform:none;letter-spacing:0}
+h1{font-size:clamp(2.2rem,6.5vw,4.6rem);line-height:1.05;margin:0}h1 span{color:var(--ye)}
+h2{font-size:clamp(1.6rem,3.6vw,2.7rem);line-height:1.15;margin:0}h3{margin:0 0 .4rem;font-size:1.1em}
+p{margin:.3rem 0;color:var(--mu)}b,em{color:var(--tx)}a{color:#8be9ff}
+code{font:.9em "JetBrains Mono",monospace;background:#0007;padding:.05em .35em;border-radius:5px;color:var(--ye)}
+.sub{font-size:1.3em}
+.g{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.c{background:var(--b2);border:1px solid var(--ln);border-radius:14px;padding:.9rem 1.1rem}.c p{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}.chips span{background:var(--b2);border:1px solid var(--ln);border-radius:99px;padding:.3rem .9rem;font-weight:500}.chips small{display:block;color:var(--mu);font-size:.72em}
+.ed{background:var(--pn);border:1px solid var(--ln);border-radius:12px;overflow:hidden;min-width:0}.ed.good{border-color:var(--ok)}.ed.bad{border-color:var(--bd)}
+.tb{display:flex;gap:.5rem;padding:.35rem .8rem;background:#0f1a33;font:12px "JetBrains Mono",monospace;color:var(--mu)}
+.bg{margin-left:auto}.good .bg{color:var(--ok)}.bad .bg{color:var(--bd)}
+.ed pre,.term{margin:0;padding:.8rem 1rem;font:clamp(13px,1.3vw,17px)/1.55 "JetBrains Mono",monospace;overflow:auto}
+.term{background:#000;border:1px solid var(--ln);border-radius:10px;color:#b6f5c8}.term.err{color:#ff9aa5}.out::before{content:"Output";display:block;color:var(--mu);font-size:.75em}
+.kw{color:var(--ye)}.st{color:#ffb86b}.cm{color:#7389b3;font-style:italic}.nu{color:#c792ea}.bi{color:#7fd1ff}
+.btn{background:var(--ye);color:#10203f;border:0;border-radius:10px;padding:.7rem 1.3rem;font-weight:700}.btn:hover{filter:brightness(1.08)}
+input[type=text],#nm{width:100%;background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:.5rem .8rem;font:1em "JetBrains Mono",monospace}
+#nr.ok{color:var(--ok)}#nr.no{color:var(--bd)}
+.scan{display:flex;flex-direction:column;gap:.45rem;overflow:hidden}.scan i{height:.55rem;border-radius:4px;background:var(--bl)}.scan.bad i{background:#ff6b7a99}.scan.good i{background:#3ddc84aa}
+.o{display:block;width:100%;text-align:left;margin:.4rem 0;padding:.7rem 1rem;background:var(--pn);border:1px solid var(--ln);border-radius:10px}.o:hover:not(:disabled){border-color:var(--bl)}.o:disabled{color:var(--tx);cursor:default}.o.ok{border-color:var(--ok);background:#3ddc8426}.o.no{border-color:var(--bd);background:#ff6b7a26}
+.ck{display:grid;gap:.3rem 1.2rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}.ck label{cursor:pointer}.ck input{accent-color:var(--ok);margin-right:.5rem;width:1.1em;height:1.1em}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:.6rem .9rem;text-align:left;border-bottom:1px solid var(--ln)}th{color:var(--ye)}td:last-child{font-family:"JetBrains Mono",monospace;color:#8be9ff}
+.q{font-size:clamp(1.2rem,2.6vw,1.8rem);border-left:4px solid var(--ye);padding-left:1rem;color:var(--tx);margin:0}
+#ov{position:fixed;inset:0;background:#030816cc;display:flex;align-items:center;justify-content:center;z-index:9;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.ovb{background:var(--b2);border:1px solid var(--ln);border-radius:16px;padding:1rem;max-width:760px;width:100%;max-height:100%;overflow:auto}.ovb h3{margin:0}
+.ovg{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:.7rem 0}.ovg button{text-align:left;background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:.5rem .8rem}.ovg b{color:var(--ye);margin-right:.4rem}.ovg small{display:block;color:var(--mu)}
+.btn.o2{background:none;color:var(--tx);border:1px solid var(--ln)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.kk{color:var(--bl);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.85rem;margin:0}
+.hero{display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));align-items:center}
+.row{display:flex;flex-wrap:wrap;gap:.5rem}
+.ob{margin:0;padding-left:1.2rem}.ob li{margin:.15rem 0}
+.fl{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.fl .c{flex:1;min-width:140px;text-align:center}.fl>i{font-style:normal;color:var(--ye);font-size:1.7em}
+.big{font-size:2.3rem;line-height:1.1}
+.vis{font:600 1.4em "JetBrains Mono",monospace;margin:.2rem 0 .5rem}.vis u{text-decoration:none;color:var(--ye)}.vis b{color:#8be9ff}.cap{color:var(--ye)}
+.rc{background:#fffbea;color:#1b2a4a;border-radius:10px;padding:.8rem 1rem;font:1em "JetBrains Mono",monospace;margin-top:.6rem}.rc div{display:flex;justify-content:space-between}.rc b{color:#1b2a4a}.rc hr{border:0;border-top:2px dashed #1b2a4a66}
+.nest{border:2px solid var(--bl);border-radius:12px;padding:.6rem}.nest .nest{border-color:var(--ye);margin:.4rem 0 .4rem 1rem}.nest .nest .nest{border-color:var(--ok);margin:.4rem 0 .4rem 1rem}
+.rule{height:.7rem;border-radius:6px;background:linear-gradient(90deg,var(--bl) 79%,var(--bd) 79%);margin:.4rem 0}
+</style></head><body>
+<header><b>🐍 Python Code Lab</b><span id="cnt">01 / 12</span><button class="nb" id="mn">☰ Slides</button></header>
+<main id="deck">
+<section class="s on" data-t="Welcome to Python Code Lab"><div class="w hero">
+<div style="display:flex;flex-direction:column;gap:.8rem">
+<p class="kk">Welcome to Python Code Lab</p>
+<h1>Naming Conventions <span>and PEP 8</span></h1>
+<p class="sub">How to Write Python Code That Everyone Can Understand</p>
+<div class="chips" data-n></div>
+<div class="c"><h3>By the end you will:</h3><ul class="ob"><li>Choose clear names for variables and functions.</li><li>Understand common Python naming styles.</li><li>Apply basic PEP 8 formatting rules.</li><li>Recognise readable and poorly formatted code.</li></ul></div>
+<div><button class="btn" data-go="1">Start Presentation ▶</button></div></div>
+<svg viewBox="0 0 360 240" role="img" aria-label="Two programmers looking at code on a screen"><rect x="80" y="20" width="200" height="120" rx="12" fill="#08101f" stroke="#4b8bbe" stroke-width="4"/><g stroke-width="7" stroke-linecap="round"><path d="M100 45h60" stroke="#ffd43b"/><path d="M112 65h90" stroke="#8be9ff"/><path d="M112 85h50" stroke="#3ddc84"/><path d="M100 105h110" stroke="#4b8bbe"/></g><path d="M165 140h30l8 24h-46z" fill="#27386a"/><rect x="130" y="164" width="100" height="8" rx="4" fill="#4b8bbe"/><circle cx="45" cy="130" r="22" fill="#ffd43b"/><path d="M15 215q0-55 30-55t30 55z" fill="#4b8bbe"/><circle cx="315" cy="130" r="22" fill="#8be9ff"/><path d="M285 215q0-55 30-55t30 55z" fill="#ffd43b"/><circle cx="53" cy="127" r="3" fill="#0b1630"/><circle cx="307" cy="127" r="3" fill="#0b1630"/></svg>
+</div></section>
+
+<section class="s" data-t="Reading someone else’s code"><div class="w">
+<h2>Imagine reading someone else’s code</h2>
+<p>You open a file with 100 lines written by another person. Here are two small programs. Both are valid Python.</p>
+<div class="g">
+<pre class="py" id="ea" data-f="card_a.py">x=50
+y=5
+z=x*y
+print(z)</pre>
+<pre class="py" id="eb" data-f="card_b.py">price = 50
+quantity = 5
+total = price * quantity
+print(total)</pre></div>
+<pre class="term out">250</pre>
+<h3>Which version is easier to understand?</h3>
+<div class="row"><button class="btn" data-v="a">Card A</button><button class="btn" data-v="b">Card B</button></div>
+<p id="fb2">Both print 250. Pick one to see why names matter.</p>
+<div class="fl" id="shop" hidden><div class="c">🏷️<br><b>price</b> = 50</div><i>×</i><div class="c">🛒<br><b>quantity</b> = 5</div><i>=</i><div class="c">🧾<br><b>total</b> = 250</div></div>
+</div></section>
+
+<section class="s" data-t="What are naming conventions?"><div class="w">
+<h2>What are naming conventions?</h2>
+<div class="g">
+<div class="c"><h3>👤 A person’s name</h3><p>“Alex” helps us know who someone is.</p></div>
+<div class="c"><h3>🏷️ A variable name</h3><p>A <b>variable</b> is a named box that stores a value. Its name should say what is inside.</p></div></div>
+<p><b>Naming conventions</b> are agreed ways to name things, so everyone does it the same way.</p>
+<pre class="py" data-f="names.py">student_name = "Alex"
+student_mark = 85</pre>
+<div class="fl"><div class="c"><b>student_name</b><p>variable name</p></div><i>→</i><div class="c"><code>"Alex"</code><p>stored value</p></div><i>→</i><div class="c">The student’s name<p>meaning</p></div></div>
+<div class="fl"><div class="c"><b>student_mark</b></div><i>→</i><div class="c"><code>85</code></div><i>→</i><div class="c">The student’s mark</div></div>
+</div></section>
+
+<section class="s" data-t="Three common naming styles"><div class="w">
+<h2>Three common naming styles</h2>
+<div class="g">
+<div class="c"><h3>snake_case</h3><div class="vis"><b>student</b><u>_</u><b>name</b></div><pre class="py" data-f="snake.py">student_name = "Alex"
+total_marks = 85</pre><p>Lowercase words joined by underscores. For <b>variables</b> and <b>functions</b>.</p></div>
+<div class="c"><h3>PascalCase</h3><div class="vis"><span class="cap">S</span>tudent<span class="cap">R</span>ecord</div><pre class="py" data-f="pascal.py">class StudentRecord:
+    pass
+
+class BankAccount:
+    pass</pre><p>A capital letter starts each word. For <b>class</b> names.</p></div>
+<div class="c"><h3>UPPER_SNAKE_CASE</h3><div class="vis">MAX<u>_</u>MARKS</div><pre class="py" data-f="upper.py">MAX_MARKS = 100
+PI_VALUE = 3.14159</pre><p>All capitals with underscores. For <b>constants</b>.</p></div></div>
+<p>These are Python naming conventions. They are not different programming languages.</p>
+</div></section>
+
+<section class="s" data-t="Choose better variable names"><div class="w">
+<h2>Choose better variable names</h2>
+<div class="g">
+<div><pre class="py" data-k="bad" data-f="guess.py">a = 20
+b = 5
+c = a * b</pre><p>Can you guess what <code>a</code>, <code>b</code> and <code>c</code> mean?</p><button class="btn" data-rv="r5">Reveal the answer</button></div>
+<div id="r5" hidden><pre class="py" data-k="good" data-f="better.py">price = 20
+quantity = 5
+total = price * quantity</pre><div class="rc"><b>RECEIPT</b><hr><div><span>Price</span><span>20</span></div><div><span>Quantity</span><span>5</span></div><hr><div><b>Total</b><b>100</b></div></div></div></div>
+<p>Meaningful names mean less guessing for the next reader.</p>
+<div class="g">
+<div class="c"><h3>Case-sensitive</h3><p>Capitals matter: <code>price</code> and <code>Price</code> are different names.</p></div>
+<div class="c"><h3>No digit first</h3><p><code>2price</code> is not allowed. <code>price2</code> is fine.</p></div>
+<div class="c"><h3>No keywords</h3><p>Keywords are words Python already uses, like <code>class</code> and <code>for</code>.</p></div></div>
+</div></section>
+
+<section class="s" data-t="Functions, classes, and constants"><div class="w">
+<h2>Naming functions, classes, and constants</h2>
+<div class="g">
+<div class="c"><div class="big">⚙️</div><h3>Function</h3><p>A machine that performs a task.</p><pre class="py" data-f="function.py">def calculate_total():
+    pass</pre><p>Use snake_case.</p></div>
+<div class="c"><div class="big">📐</div><h3>Class</h3><p>A blueprint for creating objects.</p><pre class="py" data-f="class.py">class StudentRecord:
+    pass</pre><p>Use PascalCase.</p></div>
+<div class="c"><div class="big">🔒</div><h3>Constant</h3><p>A named value treated as fixed.</p><pre class="py" data-f="constant.py">MAX_MARKS = 100</pre><p>Use UPPER_SNAKE_CASE.</p></div></div>
+<div class="g">
+<div class="c"><p><code>pass</code> is a placeholder statement. It means “do nothing yet”, so the block is not empty.</p></div>
+<div class="c"><p>The lock is a promise, not a rule: Python does <b>not</b> stop you from reassigning <code>MAX_MARKS</code>.</p></div></div>
+</div></section>
+
+<section class="s" data-t="Meet PEP 8"><div class="w">
+<h2>Meet PEP 8</h2>
+<p><b>PEP 8</b> is Python’s style guide: recommendations that help programmers write consistent, readable code. (PEP means Python Enhancement Proposal.)</p>
+<div class="fl"><div class="c">🚦<h3>On the road</h3><p>Everyone follows the same rules, so traffic flows.</p></div><i>=</i><div class="c">🐍<h3>In code</h3><p>Everyone follows the same style, so code is clear.</p></div></div>
+<div class="g">
+<div class="c"><h3>👀 Easier to read</h3></div><div class="c"><h3>🛠️ Easier to maintain</h3><p>Fix and update later.</p></div>
+<div class="c"><h3>🤝 Easier to collaborate</h3></div><div class="c"><h3>🔍 Easier to review</h3></div></div>
+<p>PEP 8 is advice about style. It does not make programs faster or guarantee bug-free code.</p>
+</div></section>
+
+<section class="s" data-t="Indentation"><div class="w">
+<h2>Indentation: why spaces matter</h2>
+<p><b>Indentation</b> is the space at the start of a line. It shows which statements belong inside an <code>if</code>, a loop, or a function. PEP 8 recommends four spaces per level.</p>
+<div class="g">
+<div class="nest"><b>Program</b><div class="nest"><code>if score >= 50:</code><div class="nest"><code>print("Pass")</code></div><div class="nest"><code>print("Well done!")</code></div></div></div>
+<div><div class="row"><button class="btn" data-st="0">Correct</button><button class="btn o2" data-st="1">Shifted</button><button class="btn o2" data-st="2">Missing</button></div>
+<pre class="py" id="sw" data-k="good" data-f="indent.py">x</pre><pre class="term out" id="stm"></pre><p id="sc"></p></div></div>
+</div></section>
+
+<section class="s" data-t="Whitespace and readability"><div class="w">
+<h2>Whitespace and readability</h2>
+<div class="g">
+<div><pre class="py sv" data-k="bad" data-f="harder.py">total=10+20
+average=total/2
+print(average)</pre><pre class="term out">15.0</pre></div>
+<div><pre class="py sv" data-k="good" data-f="easier.py">total = 10 + 20
+average = total / 2
+print(average)</pre><pre class="term out">15.0</pre></div></div>
+<div class="chips"><span>Space around <code>=</code></span><span>Space around <code>+</code> and <code>/</code></span><button class="btn" id="sp">Show spaces</button></div>
+<div class="c"><h3>Line length</h3><div class="rule"></div><p>PEP 8 generally recommends at most 79 characters per line of code.</p></div>
+</div></section>
+
+<section class="s" data-t="Fix the code"><div class="w">
+<h2>Fix the code</h2>
+<p>This is valid Python, but hard to read. What could be improved?</p>
+<pre class="py" data-k="bad" data-f="messy.py">def f(a,b):
+ x=a+b
+ return x</pre>
+<div><button class="btn" data-rv="r10">Reveal the clearer version</button></div>
+<div id="r10" hidden style="display:flex;flex-direction:column;gap:.9rem">
+<pre class="py" data-k="good" data-f="clear.py">def calculate_total(first_number, second_number):
+    total = first_number + second_number
+    return total</pre>
+<div class="g">
+<div class="c"><b>✓</b> Descriptive function name</div>
+<div class="c"><b>✓</b> Meaningful parameter names (the values a function receives)</div>
+<div class="c"><b>✓</b> Spaces around operators</div>
+<div class="c"><b>✓</b> Four-space indentation</div>
+<div class="c"><b>✓</b> A meaningful variable; <code>return</code> sends it back</div></div></div>
+</div></section>
+
+<section class="s" data-t="Quick knowledge check"><div class="w">
+<h2>Quick knowledge check</h2>
+<div class="c" id="qz"></div>
+</div></section>
+
+<section class="s" data-t="The big takeaway"><div class="w">
+<h2>Good code is easy to understand</h2>
+<div class="g">
+<div class="c tw"><table><tr><th>Code element</th><th>Recommended style</th></tr><tr><td>Variables</td><td>snake_case</td></tr><tr><td>Functions</td><td>snake_case</td></tr><tr><td>Classes</td><td>PascalCase</td></tr><tr><td>Constants</td><td>UPPER_SNAKE_CASE</td></tr><tr><td>Indentation</td><td>Four spaces</td></tr></table></div>
+<div><pre class="py" id="tf" data-k="bad" data-f="tidy.py">n="Alex"
+m=85
+print(n,m)</pre><div style="margin-top:.6rem"><button class="btn" id="tb">✨ Clean it up</button></div></div></div>
+<p class="q">“Write code for computers to run, but write it clearly for people to understand.”</p>
+<div class="chips" data-n></div>
+<p><a href="https://peps.python.org/pep-0008/" target="_blank" rel="noopener">PEP 8</a> · <a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">Python Tutorial</a> · <a href="https://docs.python.org/3/glossary.html" target="_blank" rel="noopener">Python Glossary</a></p>
+<div><button class="btn" id="rs2">↺ Restart presentation</button></div>
+</div></section>
+</main>
+<footer><button class="nb" id="prev" aria-label="Previous slide">← Prev</button><div class="pr"><i id="pg"></i></div><button class="nb" id="next" aria-label="Next slide">Next →</button><button class="nb" id="rs" aria-label="Restart" title="Back to start">↺</button></footer>
+<div id="ov" hidden></div>
+<script>
+const $=(q,r=document)=>r.querySelector(q),$$=(q,r=document)=>[...r.querySelectorAll(q)];
+const hl=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/(#.*)|("[^"\n]*")|\b(def|class|if|else|return|pass|import)\b|\b(\d+)\b|\b(print)\b/g,(m,a,b,c,d)=>`<span class=${a?'cm':b?'st':c?'kw':d?'nu':'bi'}>${m}</span>`);
+$$('pre.py').forEach(p=>{const k=p.dataset.k,w=document.createElement('div');w.className='ed '+(k||'');w.innerHTML=`<div class=tb><span>${p.dataset.f||'example.py'}</span>${k?`<b class=bg>${k=='good'?'✓ Correct':'✗ Avoid'}</b>`:''}</div>`;p.replaceWith(w);w.append(p);p.innerHTML=hl(p.textContent)});
+const T=['Essam','Zaid','Tom','Eric','Andrei','Konstantin'];
+$$('.chips[data-n]').forEach(c=>c.innerHTML=T.map(n=>`<span>${n}</span>`).join(''));
+$$('.scan').forEach(e=>e.innerHTML=e.dataset.l.split(',').map(p=>{const[a,b]=p.split(':');return `<i style="margin-left:${a}rem;width:${b}%"></i>`}).join(''));
+const S=$$('.s'),N=S.length,ov=$('#ov');let cur=0;
+S.forEach((s,i)=>{if(i){const h=document.createElement('div');h.className='hd';h.innerHTML=`<span>Slide ${String(i+1).padStart(2,'0')}</span>`;$('.w',s).prepend(h)}});
+ov.innerHTML='<div class=ovb><h3>Slide overview</h3><div class=ovg>'+S.map((s,i)=>`<button data-go=${i}><b>${String(i+1).padStart(2,'0')}</b>${s.dataset.t}</button>`).join('')+'</div><button class="btn o2" id=cl>Close</button></div>';
+const closeOv=()=>ov.hidden=true;
+function go(n){cur=Math.max(0,Math.min(N-1,n));S.forEach((s,i)=>{s.classList.toggle('on',i==cur);s.classList.toggle('bf',i<cur);s.inert=i!=cur;s.setAttribute('aria-hidden',i!=cur)});$('#cnt').textContent=String(cur+1).padStart(2,'0')+' / '+N;$('#pg').style.width=(cur+1)/N*100+'%';$('#prev').disabled=!cur;$('#next').disabled=cur==N-1;S[cur].scrollTop=0;closeOv()}
+$$('[data-go]').forEach(b=>b.onclick=()=>go(+b.dataset.go));
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);$('#rs').onclick=$('#rs2').onclick=()=>go(0);
+$('#mn').onclick=()=>ov.hidden=false;$('#cl').onclick=closeOv;ov.onclick=e=>{if(e.target==ov)closeOv()};
+addEventListener('keydown',e=>{if(e.target.matches('input[type=text],#nm'))return;const k=e.key;if(k=='ArrowRight')go(cur+1);else if(k=='ArrowLeft')go(cur-1);else if(k=='Home')go(0);else if(k=='End')go(N-1);else if(k=='Escape')closeOv()});
+$$('[data-rv]').forEach(b=>b.onclick=()=>{$('#'+b.dataset.rv).hidden=false;b.hidden=true});
+$$('[data-v]').forEach(b=>b.onclick=()=>{const a=b.dataset.v=='a';$('#fb2').innerHTML=a?'Fair! It is valid and it works. But what are <code>x</code>, <code>y</code> and <code>z</code>? You have to guess.':'Yes! <code>price × quantity = total</code> explains itself. Same result, clearer purpose.';$('#ea').parentNode.classList.add('bad');$('#eb').parentNode.classList.add('good');$('#shop').hidden=false});
+const ST=[['score = 85\n\nif score >= 50:\n    print("Pass")\n    print("Well done!")','good','Both lines are indented four spaces, so both belong to the if block.','Pass\nWell done!'],
+['score = 30\n\nif score >= 50:\n    print("Pass")\nprint("Well done!")','bad','It runs, but the second print left the if block. With a score of 30 it still says “Well done!”.','Well done!'],
+['score = 85\n\nif score >= 50:\nprint("Pass")','bad','Nothing is indented after the colon, so Python stops with an error.',"IndentationError: expected an indented block after 'if' statement on line 3"]];
+function st(i){const [c,k,t,o]=ST[i],p=$('#sw'),w=p.parentNode;p.innerHTML=hl(c);w.className='ed '+k;$('.bg',w).textContent=k=='good'?'✓ Correct':'✗ Avoid';$('#sc').textContent=t;const m=$('#stm');m.textContent=o;m.className='term '+(i<2?'out':'err')}
+$$('[data-st]').forEach(b=>b.onclick=()=>{st(+b.dataset.st);$$('[data-st]').forEach(x=>x.classList.toggle('o2',x!=b))});st(0);
+let on=0;$('#sp').onclick=()=>{on=!on;$$('pre.sv').forEach(p=>{const t=p.textContent;p.innerHTML=hl(on?t.replace(/ /g,'·'):t.replace(/·/g,' '))});$('#sp').textContent=on?'Hide spaces':'Show spaces'};
+const TD=['n="Alex"\nm=85\nprint(n,m)','student_name = "Alex"\nstudent_mark = 85\nprint(student_name, student_mark)'];let td=0;
+$('#tb').onclick=()=>{td=1-td;const p=$('#tf'),w=p.parentNode;p.innerHTML=hl(TD[td]);w.className='ed '+(td?'good':'bad');$('.bg',w).textContent=td?'✓ Correct':'✗ Avoid';$('#tb').textContent=td?'↩ Make it messy again':'✨ Clean it up'};
+const Q=[['Which is the best variable name for a student’s age?',['x','student_age','StudentAge'],1,'<code>student_age</code> is clear and uses snake_case. <code>x</code> says nothing, and PascalCase is for classes.'],
+['Which naming style is conventionally used for Python classes?',['snake_case','PascalCase','UPPER_SNAKE_CASE'],1,'Classes use PascalCase, like <code>StudentRecord</code>.'],
+['How many spaces does PEP 8 recommend for each indentation level?',['2','4','8'],1,'PEP 8 recommends four spaces per level.'],
+['What is the main purpose of PEP 8?',['To make code consistent and readable','To guarantee faster execution','To replace Python syntax'],0,'PEP 8 is a style guide that helps people read code. It does not change speed or Python’s rules.'],
+['What is wrong with this name? <code>2student = "Alex"</code>',['It uses too many letters','A name cannot begin with a digit','Variables must be uppercase'],1,'A Python identifier (a name) cannot begin with a digit. <code>student_2</code> would work.']];
+let qi=0,sc=0;
+function rq(){const q=$('#qz');
+if(qi>=Q.length){q.innerHTML=`<h3>Final score: ${sc} / ${Q.length}</h3><p>${sc==Q.length?'Perfect! You know your naming conventions.':sc>=3?'Nice work! Review the explanations for the ones you missed.':'Good start. Revisit slides 3 to 9 and try again.'}</p><button class=btn id=rt>Try again</button>`;$('#rt').onclick=()=>{qi=sc=0;rq()};return}
+const [t,o,a,ex]=Q[qi],ord=o.map((_,i)=>i).sort(()=>Math.random()-.5);
+q.innerHTML=`<p>Question ${qi+1} of ${Q.length} · Score ${sc}</p><h3>${t}</h3>`+ord.map(i=>`<button class=o data-i=${i}>${o[i]}</button>`).join('')+'<p id=ex></p><button class=btn id=nx hidden></button>';
+$$('.o',q).forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(i==a)sc++;$$('.o',q).forEach(x=>{x.disabled=true;if(+x.dataset.i==a)x.classList.add('ok')});if(i!=a)b.classList.add('no');
+$('#ex').innerHTML=(i==a?'<b style="color:var(--ok)">✓ Great job!</b> ':'<b style="color:var(--bd)">✗ Not quite, but good try.</b> ')+ex;const n=$('#nx');n.hidden=false;n.textContent=qi==Q.length-1?'See score':'Next question →';n.onclick=()=>{qi++;rq()}})}
+rq();go(0);
+</script></body></html>
